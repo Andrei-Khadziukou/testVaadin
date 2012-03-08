@@ -1,0 +1,133 @@
+
+// -q suppresses Gradle's log messages
+//task hello {
+//	doLast() {
+//		println 'Hello World!'
+//	}
+//}
+
+task hello << {
+	println 'Hello World!'
+}
+
+task upper << {
+	String original = 'mY_nAmE'
+	println 'Original string' + original
+	println 'Uppercase string' + original.toUpperCase()
+}
+
+task count << {
+	4.times { print "$it "}
+	println ''
+}
+
+// task hello must be defined before (must be defined early in script)
+task intro(dependsOn: hello) << {
+	println 'I\'m GRADLE'
+	println "I'm GRADLE"
+}
+
+// task 'taskY' cannot be defined late in script 
+task taskX(dependsOn: 'taskY') << {
+	println 'taskX'
+}
+
+task taskY << {
+	println 'taskY'
+}
+
+
+// 5.6 dynamic tasks
+4.times { counter ->
+	task "task$counter" << {
+		println "task number $counter"
+	}
+}
+
+// 5.7
+
+task0.dependsOn task1, task2
+
+hello.doFirst {
+	println 'first'
+}
+
+hello.doLast {
+	println 'last'
+}
+
+//5.8
+
+//5.9 dynamic task properties
+
+task myTask
+myTask.myProperty = 'test dinamic property'
+
+task showProps << {
+	println myTask.myProperty
+}
+
+
+// 5.10 using ant tasks
+//need to add 'antTest' folder
+task loadfileOld << {
+    def files = file('/antTest').listFiles().sort() 
+    files.each { File file ->
+          if (file.isFile()) {
+            ant.loadfile(srcFile: file, property: file.name)
+            println " *** $file.name ***"
+            println "${ant.properties[file.name]}"
+        }
+    }
+}
+
+// 5.11 Using methods
+//need to add 'antTest' folder
+task checksum << {
+    fileList('/antTest').each {File file ->
+        ant.checksum(file: file, property: "cs_$file.name") 
+        println  "$file.name Checksum: ${ant.properties["cs_$file.name "]}"
+    }
+}
+//need to add 'antTest' folder
+task loadfile << {
+    fileList('/antTest').each {File file ->
+        ant.loadfile(srcFile: file, property: file.name)
+        println "I'm fond of $file.name"
+    }
+}
+
+File[] fileList(String dir) {
+    file(dir).listFiles({file -> file.isFile() } as FileFilter).sort()
+}
+
+// 5.12 default tasks
+
+defaultTasks  'secondDefaultTask','firstDefaultTask'
+
+task firstDefaultTask << {
+    println 'First Default Task' 
+}
+
+task secondDefaultTask << {
+    println 'Second Default Task'
+}
+
+
+// 5.13 Configure by DAG
+
+task distribution << {
+    println "We distribute $version version"
+}
+
+task release(dependsOn: 'distribution') << {
+    println 'We release now'
+}
+
+gradle.taskGraph.whenReady { taskGraph ->
+    if (taskGraph.hasTask(release)) {
+        version = '1.0'
+    } else {
+        version = '1.0-snapshot'
+    }
+}
