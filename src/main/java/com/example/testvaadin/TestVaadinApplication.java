@@ -83,6 +83,7 @@ public class TestVaadinApplication extends Application implements Button.ClickLi
     private Component createToolbar() {
         HorizontalLayout horizontalLayout = new HorizontalLayout();
         horizontalLayout.addComponent(addContact);
+        addContact.addListener((Button.ClickListener)this);
         horizontalLayout.addComponent(search);
         search.addListener((Button.ClickListener) this);
         horizontalLayout.addComponent(share);
@@ -98,7 +99,7 @@ public class TestVaadinApplication extends Application implements Button.ClickLi
     private ListView getListView() {
         if (listView == null) {
             personList = new PersonList(this);
-            personForm = new PersonForm();
+            personForm = new PersonForm(this);
             listView = new ListView(personList, personForm);
         }
         return listView;
@@ -152,6 +153,8 @@ public class TestVaadinApplication extends Application implements Button.ClickLi
             showShareWindow();
         } else if (source == help) {
             showHelpView();
+        } else if (source == addContact) {
+            addNewContact();
         }
     }
 
@@ -209,4 +212,8 @@ public class TestVaadinApplication extends Application implements Button.ClickLi
         setMainCompounent(getListView());
     }
 
+    private void addNewContact() {
+        showListView();
+        personForm.addContact();
+    }
 }
