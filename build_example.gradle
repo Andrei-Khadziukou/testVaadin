@@ -131,3 +131,10 @@ gradle.taskGraph.whenReady { taskGraph ->
         version = '1.0-snapshot'
     }
 }
+
+
+
+// get environment variable
+task printCN << {
+    println System.getenv()['JAVA_HOME']
+}

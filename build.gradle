@@ -1,2 +1,13 @@
 
+// gradle can use java plugin, which contains several useful tasks for building java project
 apply plugin: 'java'
+
+// this is a section, where we can declare repositories used by gradle  
+repositories {
+    mavenCentral()
+}
+
+// this is a section, where we can enumerate project dependencies 
+dependencies {
+    compile group:'com.vaadin', name:'vaadin', version:'6.7.5'
+}
