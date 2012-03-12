@@ -1,5 +1,6 @@
 package com.example.testvaadin;
 
+import com.example.testvaadin.filter.SearchFilter;
 import com.example.testvaadin.pojo.PersonContainer;
 import com.example.testvaadin.ui.SearchView;
 import com.vaadin.Application;
@@ -40,6 +41,7 @@ public class TestVaadinApplication extends Application implements Button.ClickLi
     private SharingOptions sharingOptions = null;
     private PersonContainer personContainer = PersonContainer.createWithTestData();
     private SearchView searchView = null;
+    private SearchFilter searchFilter = null;
 
     /**
      * {@inheritDoc}
@@ -198,9 +200,12 @@ public class TestVaadinApplication extends Application implements Button.ClickLi
     public void itemClick(ItemClickEvent event) {
         Object itemId = event.getItemId();
         if (NavigationTree.SHOW_ALL.equals(itemId)) {
+            getPersonContainer().removeAllContainerFilters();
             showListView();
         } else if (NavigationTree.SEARCH.equals(itemId)) {
             showSearchView();
+        } else if (itemId instanceof SearchFilter) {
+            search((SearchFilter) itemId);
         }
 
     }
@@ -216,4 +221,27 @@ public class TestVaadinApplication extends Application implements Button.ClickLi
         showListView();
         personForm.addContact();
     }
+
+    public void search(SearchFilter searchFilter) {
+        if (searchFilter != null) {
+            getPersonContainer().removeAllContainerFilters();
+            getPersonContainer().addContainerFilter(
+                    searchFilter.getPropertyId(), searchFilter.getSearchTerm(),
+                    true, false);
+        }
+        showListView();
+    }
+
+    public void saveSearch(SearchFilter searchFilter) {
+        navigationTree.addItem(searchFilter);
+        navigationTree.setParent(searchFilter, navigationTree.SEARCH);
+        navigationTree.setChildrenAllowed(searchFilter, false);
+        navigationTree.expandItem(navigationTree.SEARCH);
+        navigationTree.setValue(searchFilter);
+    }
+
+    public SearchFilter getSearchFilter() {
+        return searchFilter;
+    }
+
 }
