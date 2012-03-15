@@ -21,6 +21,8 @@ public class ListView extends VerticalSplitPanel {
         setFirstComponent(personList);
         setSecondComponent(personForm);
         setSplitPosition(SPLIT_POSITION);
+
+        addStyleName("view");
     }
 
 }

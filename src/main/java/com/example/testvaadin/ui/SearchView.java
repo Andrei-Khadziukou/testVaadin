@@ -82,7 +82,7 @@ public class SearchView extends Panel {
         addComponent(searchName);
         addComponent(search);
 
-
+        addStyleName("view");
     }
 
     private void performSearch() {

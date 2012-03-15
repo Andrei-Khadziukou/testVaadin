@@ -9,9 +9,12 @@ import com.vaadin.data.Property;
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.event.ItemClickEvent;
 import com.vaadin.event.ItemClickEvent.ItemClickListener;
+import com.vaadin.terminal.ThemeResource;
+import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Component;
+import com.vaadin.ui.Embedded;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.HorizontalSplitPanel;
 import com.vaadin.ui.VerticalLayout;
@@ -49,7 +52,7 @@ public class TestVaadinApplication extends Application implements Button.ClickLi
     @Override
     public void init() {
         initMainWindow();
-        setTheme("runo");
+        setTheme("contacts");
     }
 
     /**
@@ -84,14 +87,33 @@ public class TestVaadinApplication extends Application implements Button.ClickLi
      */
     private Component createToolbar() {
         HorizontalLayout horizontalLayout = new HorizontalLayout();
+        horizontalLayout.setMargin(true);
+        horizontalLayout.setSpacing(true);
+        horizontalLayout.setWidth("100%");
+
         horizontalLayout.addComponent(addContact);
         addContact.addListener((Button.ClickListener)this);
+        addContact.setIcon(new ThemeResource("icons/32/document-add.png"));
+
         horizontalLayout.addComponent(search);
         search.addListener((Button.ClickListener) this);
+        search.setIcon(new ThemeResource("icons/32/folder-add.png"));
+
         horizontalLayout.addComponent(share);
         share.addListener((Button.ClickListener) this);
+        share.setIcon(new ThemeResource("icons/32/users.png"));
+
         horizontalLayout.addComponent(help);
         help.addListener((Button.ClickListener) this);
+        help.setIcon(new ThemeResource("icons/32/help.png"));
+
+        Embedded embedded = new Embedded("", new ThemeResource("images/logo.png"));
+        horizontalLayout.addComponent(embedded);
+        horizontalLayout.setComponentAlignment(embedded, Alignment.MIDDLE_RIGHT);
+        horizontalLayout.setExpandRatio(embedded, 1);
+
+        horizontalLayout.setStyleName("toolbar");
+
         return horizontalLayout;
     }
 
