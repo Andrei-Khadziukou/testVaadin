@@ -14,8 +14,8 @@ import com.vaadin.data.util.BeanItemContainer;
 @SuppressWarnings("serial")
 public class PersonContainer extends BeanItemContainer<Person> implements Serializable {
 
-    public static final String[] COLUMN_ORDER = {"firstName", "lastName", "phoneNumber"};
-    public static final String[] COLUMN_HEADER = {"First Name", "Last Name", "Phone"};
+    public static final String[] COLUMN_ORDER = {"firstName", "lastName", "email", "phoneNumber", "city"};
+    public static final String[] COLUMN_HEADER = {"First Name", "Last Name", "E-mail", "Phone", "City"};
     /**
      * @param type
      * @throws IllegalArgumentException
@@ -31,10 +31,12 @@ public class PersonContainer extends BeanItemContainer<Person> implements Serial
            Person person = new Person();
            person.setFirstName("Andrei");
            person.setLastName("Khadziukou");
+           person.setEmail("androidvsu@rambler.ru");
            personContainer.addItem(person);
            person = new Person();
            person.setFirstName("Anton");
            person.setLastName("Khadziukou");
+           person.setEmail("noreplay@mail.ru");
            personContainer.addItem(person);
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
